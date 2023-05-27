@@ -1,5 +1,6 @@
 package models
 
+<<<<<<< Updated upstream
 // import "time"
 
 // type Trip struct {
@@ -31,3 +32,9 @@ package models
 // func (TripResponse) TableName() string {
 // 	return "trips"
 // }
+=======
+type Trip struct {
+	Id    int    `json:"id_trip" form:"id_trip" gorm:"primary_key:auto_increment"`
+	Title string `json:"title" form:"title" gorm:"type: varchar(255)"`
+}
+>>>>>>> Stashed changes

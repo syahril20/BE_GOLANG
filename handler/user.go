@@ -93,7 +93,10 @@ func (h *handler) CreateUser(c echo.Context) error {
 		Password:  request.Password,
 		Phone:     request.Phone,
 		Address:   request.Address,
+<<<<<<< Updated upstream
 		IdCountry: request.IdCountry,
+=======
+>>>>>>> Stashed changes
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}

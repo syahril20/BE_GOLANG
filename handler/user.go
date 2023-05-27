@@ -91,6 +91,9 @@ func (h *handler) CreateUser(c echo.Context) error {
 		Name:      request.Name,
 		Email:     request.Email,
 		Password:  request.Password,
+		Phone:     request.Phone,
+		Address:   request.Address,
+		IdCountry: request.IdCountry,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
@@ -162,5 +165,6 @@ func convertResponse(user models.User) userdto.UserResponse {
 		Password: user.Password,
 		Phone:    user.Phone,
 		Address:  user.Address,
+		// Country:  models.Country{},
 	}
 }

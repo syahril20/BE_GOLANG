@@ -20,15 +20,15 @@ func RepositoryUser(db *gorm.DB) *repositories {
 }
 func (r *repositories) FindUser() ([]models.User, error) {
 	var Users []models.User
-	err := r.db.Find(&Users).Error
-	// err := r.db.Raw("SELECT * FROM users").Scan(&user).Error
+	err := r.db.Preload("Country").Find(&Users).Error
+	// err := r.db.Raw("SELECT * from users LEFT JOIN countries ON users.id = countries.id ORDER BY countries.name").Scan(&Users).Error
 
 	return Users, err
 }
 
 func (r *repositories) FindUserId(Id int) (models.User, error) {
 	var User models.User
-	err := r.db.First(&User, Id).Error
+	err := r.db.Preload("Country").First(&User, Id).Error
 	// err := r.db.Raw("SELECT * FROM users where id=?", Id).Scan(&User).Error
 
 	return User, err
@@ -42,7 +42,7 @@ func (r *repositories) DeleteUser(Id int, user models.User) (models.User, error)
 
 func (r *repositories) CreateUser(user models.User) (models.User, error) {
 	err := r.db.Create(&user).Error
-	// err := r.db.Exec("INSERT INTO users(name, email, password, created_at, updated_at) VALUES (?, ?, ?, ?, ?)", user.Name, user.Email, user.Password, user.CreatedAt, user.UpdatedAt).Error
+	// err := r.db.Exec("INSERT INTO users(name, email, password, phone, address, id_country, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)", user.Name, user.Email, user.Password, user.Phone, user.Address, user.IdCountry, user.CreatedAt, user.UpdatedAt).Error
 
 	return user, err
 }

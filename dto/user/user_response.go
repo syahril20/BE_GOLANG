@@ -7,5 +7,4 @@ type UserResponse struct {
 	Password string `json:"password"`
 	Phone    string `json:"phone"`
 	Address  string `json:"address"`
-	// Country  models.Country `json:"country"`
 }

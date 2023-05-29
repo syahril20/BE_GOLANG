@@ -97,6 +97,13 @@ func (h *HandlerTransactions) CreateTransaction(c echo.Context) error {
 			Message: err.Error()})
 	}
 
+	users, err := h.TransactionRepository.GetUserId(request.IdUser)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, resultdto.ErrorResult{
+			Code:    http.StatusBadRequest,
+			Message: err.Error()})
+	}
+
 	transaction := models.Transaction{
 		CounterQty: request.CounterQty,
 		Total:      request.Total,
@@ -104,6 +111,8 @@ func (h *HandlerTransactions) CreateTransaction(c echo.Context) error {
 		Attachment: request.Attachment,
 		IdTrip:     request.IdTrip,
 		Trip:       trips,
+		IdUser:     request.IdTrip,
+		User:       users,
 		CreatedAt:  time.Now(),
 		UpdatedAt:  time.Now(),
 	}
@@ -182,5 +191,7 @@ func convertResponseTransaction(Transaction models.Transaction) transactiondto.T
 		Attachment: Transaction.Attachment,
 		IdTrip:     Transaction.IdTrip,
 		Trip:       Transaction.Trip,
+		IdUser:     Transaction.IdUser,
+		User:       Transaction.User,
 	}
 }

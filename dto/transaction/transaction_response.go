@@ -10,4 +10,6 @@ type TransactionResponse struct {
 	Attachment string `json:"attachment" form:"attachment"`
 	IdTrip     int    `json:"id_trip" form:"id_trip"`
 	Trip       models.TripResponse
+	IdUser     int `json:"id_user" form:"id_user"`
+	User       models.UserResponse
 }

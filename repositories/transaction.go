@@ -10,6 +10,7 @@ type TransactionRepository interface {
 	FindTransaction() ([]models.Transaction, error)
 	FindTransactionId(Id int) (models.Transaction, error)
 	GetTripId(Id int) (models.TripResponse, error)
+	GetUserId(Id int) (models.UserResponse, error)
 	DeleteTransaction(Id int, Transaction models.Transaction) (models.Transaction, error)
 	CreateTransaction(Transaction models.Transaction) (models.Transaction, error)
 	UpdateTransaction(Id int, Transaction models.Transaction) (models.Transaction, error)
@@ -39,6 +40,13 @@ func (r *repositories) GetTripId(Id int) (models.TripResponse, error) {
 	return Tansactions, err
 }
 
+func (r *repositories) GetUserId(Id int) (models.UserResponse, error) {
+	var Users models.UserResponse
+	err := r.db.First(&Users, Id).Error
+
+	return Users, err
+}
+
 func (r *repositories) DeleteTransaction(Id int, Transaction models.Transaction) (models.Transaction, error) {
 	err := r.db.Delete(&Transaction).Error
 
@@ -46,7 +54,7 @@ func (r *repositories) DeleteTransaction(Id int, Transaction models.Transaction)
 }
 
 func (r *repositories) CreateTransaction(Transaction models.Transaction) (models.Transaction, error) {
-	err := r.db.Preload("Trip").Create(&Transaction).Error
+	err := r.db.Create(&Transaction).Error
 
 	return Transaction, err
 }

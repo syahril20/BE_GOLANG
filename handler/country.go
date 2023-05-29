@@ -106,7 +106,7 @@ func (h *HandlerCountries) CreateCountry(c echo.Context) error {
 
 func (h *HandlerCountries) UpdateCountry(c echo.Context) error {
 	request := new(countrydto.UpdateCountry)
-	if err := c.Bind(request); err != nil {
+	if err := c.Bind(&request); err != nil {
 		return c.JSON(http.StatusBadRequest, resultdto.ErrorResult{
 			Code:    http.StatusBadRequest,
 			Message: err.Error()})

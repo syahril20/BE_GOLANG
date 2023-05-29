@@ -11,7 +11,7 @@ type CountryRepository interface {
 	FindCountryId(Id int) (models.Country, error)
 	DeleteCountry(Id int, Country models.Country) (models.Country, error)
 	CreateCountry(Country models.Country) (models.Country, error)
-	UpdateCountry(Id int, country models.Country) (models.Country, error)
+	UpdateCountry(Id int, Country models.Country) (models.Country, error)
 }
 
 func RepositoryCountry(db *gorm.DB) *repositories {
@@ -28,7 +28,6 @@ func (r *repositories) FindCountry() ([]models.Country, error) {
 func (r *repositories) FindCountryId(Id int) (models.Country, error) {
 	var Countries models.Country
 	err := r.db.First(&Countries, Id).Error
-	// err := r.db.Raw("SELECT * FROM countrys where id=?", Id).Scan(&Countries).Error
 
 	return Countries, err
 }
@@ -45,8 +44,8 @@ func (r *repositories) CreateCountry(Country models.Country) (models.Country, er
 	return Country, err
 }
 
-func (r *repositories) UpdateCountry(Id int, country models.Country) (models.Country, error) {
-	err := r.db.Save(&country).Error
+func (r *repositories) UpdateCountry(Id int, Country models.Country) (models.Country, error) {
+	err := r.db.Save(&Country).Error
 
-	return country, err
+	return Country, err
 }

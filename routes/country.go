@@ -2,6 +2,7 @@ package routes
 
 import (
 	"dumbmerch/handler"
+	"dumbmerch/pkg/middleware"
 	"dumbmerch/pkg/mysql"
 	"dumbmerch/repositories"
 
@@ -11,7 +12,7 @@ import (
 func CountryRoutes(e *echo.Group) {
 	CountryRepository := repositories.RepositoryCountry(mysql.DB)
 	h := handler.HandlerCountry(CountryRepository)
-	e.GET("/country", h.FindCountry)
+	e.GET("/country", middleware.Auth(h.FindCountry))
 	e.GET("/country/:id", h.FindCountryId)
 	e.DELETE("/country/:id", h.DeleteCountry)
 	e.POST("/country", h.CreateCountry)

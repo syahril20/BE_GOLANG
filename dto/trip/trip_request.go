@@ -12,7 +12,7 @@ type CreateTrip struct {
 	Price          int    `json:"price" form:"price" validate:"required"`
 	Quota          int    `json:"quota" form:"quota" validate:"required"`
 	Description    string `json:"description" form:"description" validate:"required"`
-	Image          string `json:"image" form:"image" validate:"required"`
+	Image          string `json:"image" form:"image"`
 }
 
 type UpdateTrip struct {

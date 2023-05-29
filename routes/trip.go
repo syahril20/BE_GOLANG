@@ -2,6 +2,7 @@ package routes
 
 import (
 	"dumbmerch/handler"
+	"dumbmerch/pkg/middleware"
 	"dumbmerch/pkg/mysql"
 	"dumbmerch/repositories"
 
@@ -14,6 +15,6 @@ func TripRoutes(e *echo.Group) {
 	e.GET("/trip", h.FindTrip)
 	e.GET("/trip/:id", h.FindTripId)
 	e.DELETE("/trip/:id", h.DeleteTrip)
-	e.POST("/trip", h.CreateTrip)
+	e.POST("/trip", middleware.UploadFile(h.CreateTrip))
 	e.PATCH("/trip/:id", h.UpdateTrip)
 }

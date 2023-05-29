@@ -32,7 +32,9 @@ func (r *repositories) FindUserId(Id int) (models.User, error) {
 	// err := r.db.Raw("SELECT * FROM users where id=?", Id).Scan(&User).Error
 
 	return User, err
+
 }
+
 func (r *repositories) DeleteUser(Id int, user models.User) (models.User, error) {
 	err := r.db.Delete(&user).Error
 	// err := r.db.Raw("DELETE FROM users WHERE id=?", Id).Scan(&user).Error

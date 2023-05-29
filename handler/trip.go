@@ -5,6 +5,7 @@ import (
 	tripdto "dumbmerch/dto/trip"
 	"dumbmerch/models"
 	"dumbmerch/repositories"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -12,6 +13,10 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 )
+
+var path_file = "http://localhost:5000/uploads/"
+
+// var path_file = os.Getenv("PATH_FILE")
 
 type HandlerTrips struct {
 	TripRepository repositories.TripRepository
@@ -29,6 +34,9 @@ func (h *HandlerTrips) FindTrip(c echo.Context) error {
 			Code:    http.StatusOK,
 			Message: "Waduh"})
 	}
+	for i, p := range trip {
+		trip[i].Image = path_file + p.Image
+	}
 	return c.JSON(http.StatusOK, resultdto.SuccessResult{
 		Code: http.StatusOK,
 		Data: trip})
@@ -45,9 +53,11 @@ func (h *HandlerTrips) FindTripId(c echo.Context) error {
 			Message: "Data Gaada Bos"})
 	}
 
+	trip.Image = path_file + trip.Image
 	return c.JSON(http.StatusOK, resultdto.SuccessResult{
 		Code: http.StatusOK,
 		Data: trip})
+
 }
 
 func (h *HandlerTrips) DeleteTrip(c echo.Context) error {
@@ -72,6 +82,8 @@ func (h *HandlerTrips) DeleteTrip(c echo.Context) error {
 }
 
 func (h *HandlerTrips) CreateTrip(c echo.Context) error {
+	dataFile := c.Get("dataFile").(string)
+	fmt.Println("this is data file", dataFile)
 	request := new(tripdto.CreateTrip)
 	// Id, _ := strconv.Atoi(c.Param("id"))
 	// trip, _ := h.TripRepository.FindTripId(Id)
@@ -110,7 +122,7 @@ func (h *HandlerTrips) CreateTrip(c echo.Context) error {
 		Price:          request.Price,
 		Quota:          request.Quota,
 		Description:    request.Description,
-		Image:          request.Image,
+		Image:          dataFile,
 		CreatedAt:      time.Now(),
 		UpdatedAt:      time.Now(),
 	}

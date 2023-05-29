@@ -5,11 +5,13 @@ import (
 	transactiondto "dumbmerch/dto/transaction"
 	"dumbmerch/models"
 	"dumbmerch/repositories"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/labstack/echo/v4"
 )
 
@@ -23,6 +25,20 @@ func HandlerTransaction(TransactionRepository repositories.TransactionRepository
 
 func (h *HandlerTransactions) FindTransaction(c echo.Context) error {
 	transaction, err := h.TransactionRepository.FindTransaction()
+
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, resultdto.ErrorResult{
+			Code:    http.StatusOK,
+			Message: "Waduh"})
+	}
+	return c.JSON(http.StatusOK, resultdto.SuccessResult{
+		Code: http.StatusOK,
+		Data: transaction})
+
+}
+func (h *HandlerTransactions) GetTransByUser(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
+	transaction, err := h.TransactionRepository.GetTransByUser(id)
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, resultdto.ErrorResult{
@@ -96,14 +112,16 @@ func (h *HandlerTransactions) CreateTransaction(c echo.Context) error {
 			Code:    http.StatusBadRequest,
 			Message: err.Error()})
 	}
-
-	users, err := h.TransactionRepository.GetUserId(request.IdUser)
+	userLogin := c.Get("userLogin")
+	userId := userLogin.(jwt.MapClaims)["id"].(float64)
+	users, err := h.TransactionRepository.GetUserId(int(userId))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, resultdto.ErrorResult{
 			Code:    http.StatusBadRequest,
 			Message: err.Error()})
 	}
 
+	fmt.Println(userId)
 	transaction := models.Transaction{
 		CounterQty: request.CounterQty,
 		Total:      request.Total,
@@ -111,7 +129,7 @@ func (h *HandlerTransactions) CreateTransaction(c echo.Context) error {
 		Attachment: request.Attachment,
 		IdTrip:     request.IdTrip,
 		Trip:       trips,
-		IdUser:     request.IdTrip,
+		IdUser:     int(userId),
 		User:       users,
 		CreatedAt:  time.Now(),
 		UpdatedAt:  time.Now(),

@@ -37,8 +37,10 @@ func (h *HandlerTransactions) FindTransaction(c echo.Context) error {
 
 }
 func (h *HandlerTransactions) GetTransByUser(c echo.Context) error {
-	id, _ := strconv.Atoi(c.Param("id"))
-	transaction, err := h.TransactionRepository.GetTransByUser(id)
+	// id, _ := strconv.Atoi(c.Param("id"))
+	userLogin := c.Get("userLogin")
+	userId := userLogin.(jwt.MapClaims)["id"].(float64)
+	transaction, err := h.TransactionRepository.GetTransByUser(int(userId))
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, resultdto.ErrorResult{
@@ -114,7 +116,7 @@ func (h *HandlerTransactions) CreateTransaction(c echo.Context) error {
 	}
 	userLogin := c.Get("userLogin")
 	userId := userLogin.(jwt.MapClaims)["id"].(float64)
-	users, err := h.TransactionRepository.GetUserId(int(userId))
+	// users, err := h.TransactionRepository.GetUserId(int(userId))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, resultdto.ErrorResult{
 			Code:    http.StatusBadRequest,
@@ -130,9 +132,9 @@ func (h *HandlerTransactions) CreateTransaction(c echo.Context) error {
 		IdTrip:     request.IdTrip,
 		Trip:       trips,
 		IdUser:     int(userId),
-		User:       users,
-		CreatedAt:  time.Now(),
-		UpdatedAt:  time.Now(),
+		// User:       users,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	}
 	data, err := h.TransactionRepository.CreateTransaction(transaction)
 	if err != nil {
@@ -210,6 +212,6 @@ func convertResponseTransaction(Transaction models.Transaction) transactiondto.T
 		IdTrip:     Transaction.IdTrip,
 		Trip:       Transaction.Trip,
 		IdUser:     Transaction.IdUser,
-		User:       Transaction.User,
+		// User:       Transaction.User,
 	}
 }

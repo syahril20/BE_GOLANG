@@ -2,6 +2,7 @@ package routes
 
 import (
 	"dumbmerch/handler"
+	"dumbmerch/pkg/middleware"
 	"dumbmerch/pkg/mysql"
 	"dumbmerch/repositories"
 
@@ -11,9 +12,10 @@ import (
 func UserRoutes(e *echo.Group) {
 	userRepository := repositories.RepositoryUser(mysql.DB)
 	h := handler.HandlerUser(userRepository)
-	e.GET("/users", h.FindUser)
-	e.GET("/users/:id", h.FindUserId)
-	e.DELETE("/users/:id", h.DeleteUser)
-	e.POST("/users", h.CreateUser)
-	e.PATCH("/users/:id", h.UpdateUser)
+	e.GET("/users", middleware.Auth(h.FindUser))
+	e.GET("/users/:id", middleware.Auth(h.FindUserId))
+	e.GET("/user/:id", middleware.Auth(h.GetTransByUsers))
+	e.DELETE("/users/:id", middleware.Auth(h.DeleteUser))
+	e.POST("/users", middleware.Auth(h.CreateUser))
+	e.PATCH("/users/:id", middleware.Auth(h.UpdateUser))
 }

@@ -6,9 +6,10 @@ import (
 	"gorm.io/gorm"
 )
 
-// Kontrak (PARAM DAN)
+// Kontrak (PARAM)
 type UserRepository interface {
 	FindUser() ([]models.User, error)
+	GetTransByUsers(Id int) ([]models.Transaction, error)
 	CreateUser(user models.User) (models.User, error)
 	FindUserId(Id int) (models.User, error)
 	DeleteUser(Id int, user models.User) (models.User, error)
@@ -20,15 +21,23 @@ func RepositoryUser(db *gorm.DB) *repositories {
 }
 func (r *repositories) FindUser() ([]models.User, error) {
 	var Users []models.User
-	err := r.db.Find(&Users).Error
+	err := r.db.Preload("Transaction.Trip.Country").Find(&Users).Error
 	// err := r.db.Raw("SELECT * from users LEFT JOIN countries ON users.id = countries.id ORDER BY countries.name").Scan(&Users).Error
 
 	return Users, err
 }
 
+func (r *repositories) GetTransByUsers(Id int) ([]models.Transaction, error) {
+
+	var Transactions []models.Transaction
+	err := r.db.Where("id_user = ?", Id).Preload("User").Preload("Trip.Country").Find(&Transactions).Error
+
+	return Transactions, err
+}
+
 func (r *repositories) FindUserId(Id int) (models.User, error) {
 	var User models.User
-	err := r.db.First(&User, Id).Error
+	err := r.db.Preload("Transaction.Trip.Country").First(&User, Id).Error
 	// err := r.db.Raw("SELECT * FROM users where id=?", Id).Scan(&User).Error
 
 	return User, err

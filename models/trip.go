@@ -6,7 +6,7 @@ type Trip struct {
 	Id             int             `json:"id_trip" form:"id_trip" gorm:"primary_key:auto_increment"`
 	Title          string          `json:"title" form:"title" gorm:"type: varchar(255)"`
 	IdCountry      int             `json:"id_country" form:"id_country"`
-	Country        CountryResponse `json:"country" form:"country" gorm:"foreignKey:IdCountry"`
+	Country        CountryResponse `json:"country" form:"country" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;foreignKey:IdCountry"`
 	Accomodation   string          `json:"accomodation" form:"accomodation" gorm:"type: varchar(255)"`
 	Transportation string          `json:"transportation" form:"transportation" gorm:"type: varchar(255)"`
 	Eat            string          `json:"eat" form:"eat" gorm:"type: varchar(255)"`

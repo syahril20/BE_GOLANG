@@ -49,6 +49,25 @@ func (h *handler) FindUserId(c echo.Context) error {
 		Code: http.StatusOK,
 		Data: user})
 }
+
+func (h *handler) GetTransByUsers(c echo.Context) error {
+	id, _ := strconv.Atoi(c.Param("id"))
+	transaction, err := h.UserRepository.GetTransByUsers(id)
+
+	// userLogin := c.Get("userLogin")
+	// userId := userLogin.(jwt.MapClaims)["id"].(float64)
+
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, resultdto.ErrorResult{
+			Code:    http.StatusOK,
+			Message: "Waduh"})
+	}
+	return c.JSON(http.StatusOK, resultdto.SuccessResult{
+		Code: http.StatusOK,
+		Data: transaction})
+
+}
+
 func (h *handler) DeleteUser(c echo.Context) error {
 	id, _ := strconv.Atoi(c.Param("id"))
 	user, _ := h.UserRepository.FindUserId(id)
@@ -88,11 +107,12 @@ func (h *handler) CreateUser(c echo.Context) error {
 	}
 
 	user := models.User{
-		Name:      request.Name,
-		Email:     request.Email,
-		Password:  request.Password,
-		Phone:     request.Phone,
-		Address:   request.Address,
+		Name:     request.Name,
+		Email:    request.Email,
+		Password: request.Password,
+		Phone:    request.Phone,
+		Address:  request.Address,
+
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
@@ -164,5 +184,7 @@ func convertResponse(user models.User) userdto.UserResponse {
 		Password: user.Password,
 		Phone:    user.Phone,
 		Address:  user.Address,
+		// TransactionId: user.TransactionId,
+		Transaction: user.Transaction,
 	}
 }

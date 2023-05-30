@@ -30,7 +30,7 @@ func (r *repositories) FindTransaction() ([]models.Transaction, error) {
 func (r *repositories) GetTransByUser(Id int) ([]models.Transaction, error) {
 
 	var Transactions []models.Transaction
-	err := r.db.Where("id_user = ?", Id).Preload("User").Preload("Trip.Country").Find(&Transactions).Error
+	err := r.db.Where("id_user = ?", Id).Preload("Trip.Country").Find(&Transactions).Error
 
 	return Transactions, err
 }

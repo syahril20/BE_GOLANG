@@ -13,8 +13,8 @@ func CountryRoutes(e *echo.Group) {
 	CountryRepository := repositories.RepositoryCountry(mysql.DB)
 	h := handler.HandlerCountry(CountryRepository)
 	e.GET("/country", middleware.Auth(h.FindCountry))
-	e.GET("/country/:id", h.FindCountryId)
-	e.DELETE("/country/:id", h.DeleteCountry)
-	e.POST("/country", h.CreateCountry)
-	e.PATCH("/country/:id", h.UpdateCountry)
+	e.GET("/country/:id", middleware.Auth(h.FindCountryId))
+	e.DELETE("/country/:id", middleware.Auth(h.DeleteCountry))
+	e.POST("/country", middleware.Auth(h.CreateCountry))
+	e.PATCH("/country/:id", middleware.Auth(h.UpdateCountry))
 }

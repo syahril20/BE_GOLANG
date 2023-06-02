@@ -112,6 +112,7 @@ func (h *handler) CreateUser(c echo.Context) error {
 		Password: request.Password,
 		Phone:    request.Phone,
 		Address:  request.Address,
+		RoleId:   request.RoleId,
 
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),

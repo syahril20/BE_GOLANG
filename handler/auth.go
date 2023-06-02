@@ -46,6 +46,8 @@ func (h *handlerAuth) Register(c echo.Context) error {
 		Name:     request.Name,
 		Email:    request.Email,
 		Password: password,
+		Phone:    request.Phone,
+		Address:  request.Address,
 	}
 
 	RegResponse := authdto.RegResponse{

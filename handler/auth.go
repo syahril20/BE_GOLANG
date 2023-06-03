@@ -48,11 +48,22 @@ func (h *handlerAuth) Register(c echo.Context) error {
 		Password: password,
 		Phone:    request.Phone,
 		Address:  request.Address,
-		RoleId:   2,
+		RoleId:   request.RoleId,
+	}
+
+	//generate token
+	claims := jwt.MapClaims{}
+	claims["id"] = user.Id
+	claims["exp"] = time.Now().Add(time.Hour * 2).Unix() // 2 hours expired
+	token, errGenerateToken := jwtToken.GenerateToken(&claims)
+	if errGenerateToken != nil {
+		log.Println(errGenerateToken)
+		return echo.NewHTTPError(http.StatusUnauthorized)
 	}
 
 	RegResponse := authdto.RegResponse{
 		Email: user.Email,
+		Token: token,
 	}
 
 	_, err = h.AuthRepository.Register(user)
@@ -98,8 +109,9 @@ func (h *handlerAuth) Login(c echo.Context) error {
 	}
 
 	loginResponse := authdto.LoginResponse{
-		Email: user.Email,
-		Token: token,
+		Email:  user.Email,
+		Token:  token,
+		RoleId: user.RoleId,
 	}
 
 	return c.JSON(http.StatusOK, dto.SuccessResult{Code: http.StatusOK, Data: loginResponse})

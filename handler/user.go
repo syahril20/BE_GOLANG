@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/labstack/echo/v4"
 )
 
@@ -36,10 +37,11 @@ func (h *handler) FindUser(c echo.Context) error {
 }
 
 func (h *handler) FindUserId(c echo.Context) error {
-	id, _ := strconv.Atoi(c.Param("id"))
-	user, _ := h.UserRepository.FindUserId(id)
+	userLogin := c.Get("userLogin")
+	userId := userLogin.(jwt.MapClaims)["id"].(float64)
+	user, _ := h.UserRepository.FindUserId(int(userId))
 
-	if user.Id != id {
+	if user.Id != int(userId) {
 		return c.JSON(http.StatusBadRequest, resultdto.ErrorResult{
 			Code:    http.StatusInternalServerError,
 			Message: "Data Gaada Bos"})

@@ -175,19 +175,12 @@ func (h *HandlerTransactions) UpdateTransaction(c echo.Context) error {
 	if request.Attachment != "" {
 		transaction.Attachment = request.Attachment
 	}
-	if request.IdTrip != 0 {
-		transaction.IdTrip = request.IdTrip
-	}
-
-	trips, err := h.TransactionRepository.GetTripId(request.IdTrip)
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, resultdto.ErrorResult{
 			Code:    http.StatusBadRequest,
 			Message: err.Error()})
 	}
-
-	transaction.Trip = trips
 
 	transaction.UpdatedAt = time.Now()
 

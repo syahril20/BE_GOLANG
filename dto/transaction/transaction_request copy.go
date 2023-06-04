@@ -13,5 +13,4 @@ type UpdateTransaction struct {
 	Total      int    `json:"total" form:"total"`
 	Status     string `json:"status" form:"status"`
 	Attachment string `json:"attachment" form:"attachment"`
-	IdTrip     int    `json:"id_trip" form:"id_trip"`
 }

@@ -42,10 +42,10 @@ func (r *repositories) FindTransactionId(Id int) (models.Transaction, error) {
 	return Tansactions, err
 }
 func (r *repositories) GetTripId(Id int) (models.TripResponse, error) {
-	var Tansactions models.TripResponse
-	err := r.db.Preload("Country").First(&Tansactions, Id).Error
+	var Trip models.TripResponse
+	err := r.db.Preload("Country").First(&Trip, Id).Error
 
-	return Tansactions, err
+	return Trip, err
 }
 
 func (r *repositories) GetUserId(Id int) (models.UserResponse, error) {

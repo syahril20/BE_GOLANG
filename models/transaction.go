@@ -3,9 +3,9 @@ package models
 import "time"
 
 type Transaction struct {
-	Id     int `json:"id_trans" form:"id_trans" gorm:"primary_key:auto_increment"`
-	IdUser int `json:"id_user" form:"id_user"`
-	// User       UserResponse `json:"user" form:"user" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;foreignKey:IdUser"`
+	Id         int          `json:"id_trans" form:"id_trans" gorm:"primary_key:auto_increment"`
+	IdUser     int          `json:"id_user" form:"id_user"`
+	User       UserResponse `json:"user" form:"user" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;foreignKey:IdUser"`
 	CounterQty int          `json:"counter_qty" form:"counter_qty"`
 	Total      int          `json:"total" form:"total"`
 	Status     string       `json:"status" form:"status"`

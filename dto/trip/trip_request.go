@@ -11,6 +11,7 @@ type CreateTrip struct {
 	DateTrip       string `json:"date_trip" form:"date_trip" validate:"required"`
 	Price          int    `json:"price" form:"price" validate:"required"`
 	Quota          int    `json:"quota" form:"quota" validate:"required"`
+	Current_Quota  int    `json:"current_quota" form:"current_quota" validate:"required"`
 	Description    string `json:"description" form:"description" validate:"required"`
 	Image          string `json:"image" form:"image"`
 }
@@ -26,6 +27,7 @@ type UpdateTrip struct {
 	DateTrip       string `json:"date_trip" form:"date_trip"`
 	Price          int    `json:"price" form:"price"`
 	Quota          int    `json:"quota" form:"quota"`
+	Current_Quota  int    `json:"current_quota" form:"current_quota"`
 	Description    string `json:"description" form:"description"`
 	Image          string `json:"image" form:"image"`
 }

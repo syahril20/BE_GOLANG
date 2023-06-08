@@ -15,6 +15,7 @@ type Trip struct {
 	DateTrip       string          `json:"date_trip" form:"date_trip" gorm:"type: varchar(255)"`
 	Price          int             `json:"price" form:"price"`
 	Quota          int             `json:"quota" form:"quota"`
+	Current_Quota  int             `json:"current_quota" form:"current_quota"`
 	Description    string          `json:"description" form:"description" gorm:"type: varchar(255)"`
 	Image          string          `json:"image" form:"image" gorm:"type: varchar(255)"`
 	CreatedAt      time.Time       `json:"-"`
@@ -34,6 +35,7 @@ type TripResponse struct {
 	DateTrip       string          `json:"date_trip" form:"date_trip" gorm:"type: varchar(255)"`
 	Price          int             `json:"price" form:"price"`
 	Quota          int             `json:"quota" form:"quota"`
+	Current_Quota  int             `json:"current_quota" form:"current_quota"`
 	Description    string          `json:"description" form:"description" gorm:"type: varchar(255)"`
 	Image          string          `json:"image" form:"image" gorm:"type: varchar(255)"`
 }

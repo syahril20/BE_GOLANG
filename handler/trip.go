@@ -121,6 +121,7 @@ func (h *HandlerTrips) CreateTrip(c echo.Context) error {
 		DateTrip:       request.DateTrip,
 		Price:          request.Price,
 		Quota:          request.Quota,
+		Current_Quota:  request.Current_Quota,
 		Description:    request.Description,
 		Image:          dataFile,
 		CreatedAt:      time.Now(),
@@ -153,25 +154,23 @@ func (h *HandlerTrips) UpdateTrip(c echo.Context) error {
 			Message: err.Error()})
 	}
 
-	countries, err := h.TripRepository.GetCountryId(request.IdCountry)
+	// countries, err := h.TripRepository.GetCountryId(request.IdCountry)
 
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, resultdto.ErrorResult{
-			Code:    http.StatusBadRequest,
-			Message: err.Error()})
-	}
+	// if err != nil {
+	// 	return c.JSON(http.StatusBadRequest, resultdto.ErrorResult{
+	// 		Code:    http.StatusBadRequest,
+	// 		Message: err.Error()})
+	// }
 
 	if request.Title != "" {
 		trip.Title = request.Title
 	}
-	if request.IdCountry != 0 {
-		trip.IdCountry = request.IdCountry
-	}
+
 	if request.Accomodation != "" {
 		trip.Accomodation = request.Accomodation
 	}
 
-	trip.Country = countries
+	// trip.Country = countries
 
 	if request.Transportation != "" {
 		trip.Transportation = request.Transportation
@@ -193,6 +192,9 @@ func (h *HandlerTrips) UpdateTrip(c echo.Context) error {
 	}
 	if request.Quota != 0 {
 		trip.Quota = request.Quota
+	}
+	if request.Current_Quota != 0 {
+		trip.Current_Quota = request.Current_Quota
 	}
 	if request.Description != "" {
 		trip.Description = request.Description
@@ -228,6 +230,7 @@ func convertResponseTrip(Trip models.Trip) tripdto.TripResponse {
 		DateTrip:       Trip.DateTrip,
 		Price:          Trip.Price,
 		Quota:          Trip.Quota,
+		Current_Quota:  Trip.Current_Quota,
 		Description:    Trip.Description,
 		Image:          Trip.Image,
 	}

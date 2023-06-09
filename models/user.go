@@ -19,13 +19,14 @@ type User struct {
 }
 
 type UserResponse struct {
-	Id       int    `json:"id" form:"id"`
-	Name     string `json:"name"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
-	Phone    string `json:"phone"`
-	Address  string `json:"address"`
-	Role     string `json:"role"`
+	Id       int          `json:"id" form:"id"`
+	Name     string       `json:"name"`
+	Email    string       `json:"email"`
+	Password string       `json:"password"`
+	Phone    string       `json:"phone"`
+	Address  string       `json:"address"`
+	RoleId   int          `json:"role_id" form:"role_id"`
+	RoleName RoleResponse `json:"role_name" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;foreignKey:RoleId"`
 }
 
 func (UserResponse) TableName() string {

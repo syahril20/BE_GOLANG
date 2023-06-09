@@ -14,7 +14,8 @@ type TransactionRepository interface {
 	GetTransByUser(Id int) ([]models.Transaction, error)
 	DeleteTransaction(Id int, Transaction models.Transaction) (models.Transaction, error)
 	CreateTransaction(Transaction models.Transaction) (models.Transaction, error)
-	UpdateTransaction(Id int, Transaction models.Transaction) (models.Transaction, error)
+	// UpdateTransaction(Id int, Transaction models.Transaction) (models.Transaction, error)
+	UpdateTransaction(Status string, Id int) (models.Transaction, error)
 }
 
 func RepositoryTransaction(db *gorm.DB) *repositories {
@@ -62,13 +63,29 @@ func (r *repositories) DeleteTransaction(Id int, Transaction models.Transaction)
 }
 
 func (r *repositories) CreateTransaction(Transaction models.Transaction) (models.Transaction, error) {
-	err := r.db.Create(&Transaction).Error
+	err := r.db.Preload("User").Create(&Transaction).Error
 
 	return Transaction, err
 }
 
-func (r *repositories) UpdateTransaction(Id int, Transaction models.Transaction) (models.Transaction, error) {
-	err := r.db.Save(&Transaction).Error
+// func (r *repositories) UpdateTransaction(Id int, Transaction models.Transaction) (models.Transaction, error) {
+// 	err := r.db.Save(&Transaction).Error
 
-	return Transaction, err
+// 	return Transaction, err
+// }
+
+func (r *repositories) UpdateTransaction(status string, Id int) (models.Transaction, error) {
+	var transaction models.Transaction
+	r.db.Preload("Trip").Preload("User").First(&transaction, Id)
+
+	if status != transaction.Status && status == "success" {
+		var Trip models.Trip
+		r.db.First(&Trip, transaction.Trip.Id)
+		Trip.Current_Quota = Trip.Current_Quota + transaction.CounterQty
+		r.db.Save(&Trip)
+	}
+
+	transaction.Status = status
+	err := r.db.Save(&transaction).Error
+	return transaction, err
 }

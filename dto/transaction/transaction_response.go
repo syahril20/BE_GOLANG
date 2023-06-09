@@ -11,5 +11,5 @@ type TransactionResponse struct {
 	IdTrip     int    `json:"id_trip" form:"id_trip"`
 	Trip       models.TripResponse
 	IdUser     int `json:"id_user" form:"id_user"`
-	// User       models.UserResponse
+	User       models.UserResponse
 }

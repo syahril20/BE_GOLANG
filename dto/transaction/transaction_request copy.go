@@ -6,6 +6,7 @@ type CreateTransaction struct {
 	Status     string `json:"status" form:"status" validate:"required"`
 	Attachment string `json:"attachment" form:"attachment" validate:"required"`
 	IdTrip     int    `json:"id_trip" form:"id_trip" validate:"required"`
+	IdUser     int    `json:"id_user" form:"id_user" validate:"required"`
 }
 
 type UpdateTransaction struct {

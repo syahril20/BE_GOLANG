@@ -21,7 +21,7 @@ func RepositoryUser(db *gorm.DB) *repositories {
 }
 func (r *repositories) FindUser() ([]models.User, error) {
 	var Users []models.User
-	err := r.db.Preload("Transaction.Trip.Country").Find(&Users).Error
+	err := r.db.Preload("RoleName").Preload("Transaction.User.RoleName").Preload("Transaction.Trip.Country").Find(&Users).Error
 	// err := r.db.Raw("SELECT * from users LEFT JOIN countries ON users.id = countries.id ORDER BY countries.name").Scan(&Users).Error
 
 	return Users, err

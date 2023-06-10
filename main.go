@@ -18,7 +18,7 @@ func main() {
 	}
 	e := echo.New()
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"*"},
+		AllowOrigins: []string{"https://begolang-production.up.railway.app"},
 		AllowMethods: []string{echo.GET, echo.POST, echo.PATCH, echo.DELETE},
 		AllowHeaders: []string{"X-Requested-With", "Content-Type", "Authorization"},
 	}))

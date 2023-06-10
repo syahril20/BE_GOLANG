@@ -14,10 +14,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-var path_file = "http://localhost:5000/uploads/"
-
-// var path_file = os.Getenv("PATH_FILE")
-
 type HandlerTrips struct {
 	TripRepository repositories.TripRepository
 }
@@ -34,9 +30,7 @@ func (h *HandlerTrips) FindTrip(c echo.Context) error {
 			Code:    http.StatusOK,
 			Message: "Waduh"})
 	}
-	for i, p := range trip {
-		trip[i].Image = path_file + p.Image
-	}
+
 	return c.JSON(http.StatusOK, resultdto.SuccessResult{
 		Code: http.StatusOK,
 		Data: trip})
@@ -53,7 +47,6 @@ func (h *HandlerTrips) FindTripId(c echo.Context) error {
 			Message: "Data Gaada Bos"})
 	}
 
-	trip.Image = path_file + trip.Image
 	return c.JSON(http.StatusOK, resultdto.SuccessResult{
 		Code: http.StatusOK,
 		Data: trip})
@@ -107,6 +100,19 @@ func (h *HandlerTrips) CreateTrip(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, resultdto.ErrorResult{
 			Code:    http.StatusBadRequest,
 			Message: err.Error()})
+	}
+
+	// var ctx = context.Background()
+	// var CLOUD_NAME = os.Getenv("CLOUD_NAME")
+	// var API_KEY = os.Getenv("API_KEY")
+	// var API_SECRET = os.Getenv("API_SECRET")
+
+	// cld, _ := cloudinary.NewFromParams(CLOUD_NAME, API_KEY, API_SECRET)
+
+	// resp, err := cld.Upload.Upload(ctx, dataFile, uploader.UploadParams{Folder: "dumbmerch"})
+
+	if err != nil {
+		fmt.Println(err.Error())
 	}
 
 	trip := models.Trip{

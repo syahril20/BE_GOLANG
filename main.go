@@ -5,7 +5,6 @@ import (
 	"dumbmerch/pkg/mysql"
 	"dumbmerch/routes"
 	"fmt"
-	"os"
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
@@ -30,9 +29,7 @@ func main() {
 	routes.RouteInit(e.Group("/api/v1"))
 	e.Static("/uploads", "uploads")
 
-	PORT := os.Getenv("PORT")
-
-	fmt.Println("server running localhost:" + PORT)
-	e.Logger.Fatal(e.Start(":" + PORT))
+	fmt.Println("server running localhost:5000")
+	e.Logger.Fatal(e.Start("localhost:5000"))
 
 }

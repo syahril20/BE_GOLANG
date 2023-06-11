@@ -5,6 +5,7 @@ import (
 	userdto "dumbmerch/dto/user"
 	"dumbmerch/models"
 	"dumbmerch/repositories"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -130,12 +131,17 @@ func (h *handler) CreateUser(c echo.Context) error {
 }
 
 func (h *handler) UpdateUser(c echo.Context) error {
-	request := new(userdto.UpdateUser)
-	if err := c.Bind(request); err != nil {
-		return c.JSON(http.StatusBadRequest, resultdto.ErrorResult{
-			Code:    http.StatusBadRequest,
-			Message: err.Error()})
+	dataFile := c.Get("dataFile").(string)
+	// role_id, _ := strconv.Atoi(c.FormValue("role_id"))
+	request := userdto.UpdateUser{
+		Name:    c.FormValue("name"),
+		Email:   c.FormValue("email"),
+		Phone:   c.FormValue("phone"),
+		Address: c.FormValue("address"),
+		Image:   dataFile,
 	}
+
+	fmt.Println("this is data file", dataFile)
 
 	id, _ := strconv.Atoi(c.Param("id"))
 	user, err := h.UserRepository.FindUserId(id)
@@ -166,6 +172,13 @@ func (h *handler) UpdateUser(c echo.Context) error {
 		user.Address = request.Address
 	}
 
+	if request.RoleId != 0 {
+		user.RoleId = request.RoleId
+	}
+
+	if request.Image != "" {
+		user.Image = request.Image
+	}
 	user.UpdatedAt = time.Now()
 
 	data, err := h.UserRepository.UpdateUser(id, user)
@@ -188,6 +201,9 @@ func convertResponse(user models.User) userdto.UserResponse {
 		Phone:    user.Phone,
 		Address:  user.Address,
 		// TransactionId: user.TransactionId,
+		Image:  user.Image,
+		RoleId: user.RoleId,
+		// Role:        user.RoleName,
 		Transaction: user.Transaction,
 	}
 }

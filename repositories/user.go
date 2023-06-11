@@ -37,7 +37,7 @@ func (r *repositories) GetTransByUsers(Id int) ([]models.Transaction, error) {
 
 func (r *repositories) FindUserId(Id int) (models.User, error) {
 	var User models.User
-	err := r.db.Preload("Transaction.Trip.Country").First(&User, Id).Error
+	err := r.db.Preload("RoleName").Preload("Transaction.User.RoleName").Preload("Transaction.Trip.Country").First(&User, Id).Error
 	// err := r.db.Raw("SELECT * FROM users where id=?", Id).Scan(&User).Error
 
 	return User, err

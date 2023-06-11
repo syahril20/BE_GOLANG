@@ -13,6 +13,7 @@ type User struct {
 	Address     string        `json:"address" form:"address" gorm:"type: varchar(255)"`
 	RoleId      int           `json:"role_id" form:"role_id"`
 	RoleName    RoleResponse  `json:"role_name" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;foreignKey:RoleId"`
+	Image       string        `json:"image" form:"image" gorm:"type: varchar(255)"`
 	Transaction []Transaction `json:"transaction" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;foreignKey:IdUser"`
 	CreatedAt   time.Time     `json:"-"`
 	UpdatedAt   time.Time     `json:"-"`
@@ -25,8 +26,9 @@ type UserResponse struct {
 	Password string       `json:"password"`
 	Phone    string       `json:"phone"`
 	Address  string       `json:"address"`
-	RoleId   int          `json:"role_id" form:"role_id"`
+	RoleId   int          `json:"role_id"`
 	RoleName RoleResponse `json:"role_name" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;foreignKey:RoleId"`
+	Image    string       `json:"image"`
 }
 
 func (UserResponse) TableName() string {

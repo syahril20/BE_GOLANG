@@ -9,6 +9,9 @@ type UserResponse struct {
 	Password string `json:"password"`
 	Phone    string `json:"phone"`
 	Address  string `json:"address"`
-	// TransactionId int                `json:"transaction_id"`
+	Image    string `json:"image"`
+	RoleId   int    `json:"role_id"`
+	// Role        models.RoleResponse  `json:"role"`
 	Transaction []models.Transaction `json:"transaction"`
+	// TransactionId int                `json:"transaction_id"`
 }

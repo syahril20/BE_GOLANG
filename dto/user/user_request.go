@@ -15,4 +15,6 @@ type UpdateUser struct {
 	Password string `json:"password" form:"password"`
 	Phone    string `json:"phone" form:"phone"`
 	Address  string `json:"address" form:"address"`
+	RoleId   int    `json:"role_id" form:"role_id"`
+	Image    string `json:"image" form:"image"`
 }
